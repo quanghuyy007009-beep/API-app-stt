@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Bảng thử nghiệm REST API - Sân Thể Thao">
+  <title>Bảng thử nghiệm REST API - Sân Thể Thao</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-container">
+    <div class="test-board-card">
+      <!-- HEADER -->
+      <header class="board-header">
+        <div class="header-left">
+          <div class="terminal-icon">
+            <span>&gt;_</span>
+          </div>
+          <div class="header-text">
+            <h1 class="header-title">Bảng thử nghiệm REST API</h1>
+            <p class="header-subtitle">Kiểm tra gửi request trực tiếp đến server (Sân thể thao)</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- METHOD TABS BAR -->
+      <nav class="method-tabs-nav" aria-label="Method Tabs">
+        <button type="button" class="method-pill" data-tab="list">
+          <span class="pill-badge badge-get">GET</span>
+          <span class="pill-label">Danh sách</span>
+        </button>
+
+        <button type="button" class="method-pill active" data-tab="detail">
+          <span class="pill-badge badge-get">GET</span>
+          <span class="pill-label">Chi tiết</span>
+        </button>
+
+        <button type="button" class="method-pill" data-tab="create">
+          <span class="pill-badge badge-post">POST</span>
+          <span class="pill-label">Thêm mới</span>
+        </button>
+
+        <button type="button" class="method-pill" data-tab="update">
+          <span class="pill-badge badge-put">PUT</span>
+          <span class="pill-label">Cập nhật</span>
+        </button>
+
+        <button type="button" class="method-pill" data-tab="delete">
+          <span class="pill-badge badge-delete">DELETE</span>
+          <span class="pill-label">Xóa</span>
+        </button>
+      </nav>
+
+      <!-- ENDPOINT DOCUMENTATION CARD -->
+      <section class="doc-card" id="docCard">
+        <div class="doc-header">
+          <span class="doc-method-badge badge-get" id="docMethodBadge">GET</span>
+          <h2 class="doc-title" id="docTitle">Xem chi tiết 1 sân thể thao</h2>
+        </div>
+        <p class="doc-description" id="docDesc">Lấy thông tin chi tiết tên sân, môn thể thao, giá tiền và địa chỉ theo ID.</p>
+
+        <div class="doc-details-grid">
+          <div class="doc-row">
+            <span class="doc-label">Tham số:</span>
+            <span class="doc-val" id="docParams">id (đường dẫn)</span>
+          </div>
+          <div class="doc-row">
+            <span class="doc-label">Thành công:</span>
+            <span class="doc-val" id="docSuccess">200 OK: { id, name, sportType, pricePerHour, address }</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- REQUEST BUILDER & PREVIEW CARD -->
+      <section class="request-card">
+        <div class="request-card-header">
+          <div class="req-title-wrap">
+            <svg class="send-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <h3 class="req-title">Xem trước &amp; Gửi Request</h3>
+          </div>
+          <span class="req-subtitle" id="reqSubtitle">Tự động theo ID sân</span>
+        </div>
+
+        <!-- URL PREVIEW BAR -->
+        <div class="url-preview-bar">
+          <span class="preview-method" id="previewMethod">GET</span>
+          <span class="preview-url" id="previewUrl">/api/courts/2</span>
+        </div>
+
+        <!-- DYNAMIC INPUT FIELDS -->
+        <form id="executeForm" class="request-inputs-form">
+          <!-- Field: ID (for Detail, Update, Delete) -->
+          <div class="form-group" id="grpId">
+            <label for="inputId" class="field-label" id="lblId">ID sân (court_id):</label>
+            <input type="number" id="inputId" class="field-input" value="2" min="1" placeholder="Nhập ID sân...">
+          </div>
+
+          <!-- Field: Title / Name (for Create, Update) -->
+          <div class="form-group" id="grpTitle" style="display: none;">
+            <label for="inputTitle" class="field-label" id="lblTitle">Tên sân thể thao (name):</label>
+            <input type="text" id="inputTitle" class="field-input" placeholder="Ví dụ: Sân Cầu Lông Số 5...">
+          </div>
+
+          <!-- Field: SportType (for Create, Update) -->
+          <div class="form-group" id="grpSportType" style="display: none;">
+            <label for="inputSportType" class="field-label">Môn thể thao (sportType):</label>
+            <input type="text" id="inputSportType" class="field-input" value="Badminton" placeholder="Ví dụ: Badminton, Football, Tennis...">
+          </div>
+
+          <!-- Field: Price (for Create, Update) -->
+          <div class="form-group" id="grpPrice" style="display: none;">
+            <label for="inputPrice" class="field-label">Giá thuê / Giờ (VNĐ):</label>
+            <input type="number" id="inputPrice" class="field-input" value="150000" min="0" step="5000">
+          </div>
+
+          <!-- Submit Button -->
+          <div class="form-actions">
+            <button type="submit" class="btn-send-request" id="btnSend">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+              <span id="btnSendText">Gửi Request</span>
+              <span class="spinner-icon" id="sendSpinner"></span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- RESPONSE SECTION -->
+      <section class="response-card" id="responseCard" style="display: none;">
+        <div class="response-card-header">
+          <div class="res-title-group">
+            <span class="res-icon">📦</span>
+            <h3 class="res-heading">Kết quả phản hồi (Response)</h3>
+          </div>
+          <div class="res-meta-badges">
+            <span class="status-badge" id="resStatusBadge">200 OK</span>
+            <span class="meta-pill" id="resTimeBadge">45 ms</span>
+          </div>
+        </div>
+
+        <div class="response-viewer-wrap">
+          <div class="code-toolbar">
+            <span class="code-lang">JSON</span>
+            <button type="button" class="btn-copy-code" id="btnCopyCode">Sao chép</button>
+          </div>
+          <pre class="response-code-pre"><code id="responseCode"></code></pre>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
